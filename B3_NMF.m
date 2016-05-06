@@ -1,5 +1,5 @@
 
-[y,fs,bits,opt_ck] = wavread('audio/train/vio/vio_64.wav');
+[y,fs,bits,opt_ck] = wavread('audio/train/cla/cla_64.wav');
 idx=find(sum(y,2)==0);
 y(idx,:)=[];
 nfft = 2048;
