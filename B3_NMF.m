@@ -1,4 +1,4 @@
-clear;
+
 [y,fs,bits,opt_ck] = wavread('audio/train/vio/vio_64.wav');
 idx=find(sum(y,2)==0);
 y(idx,:)=[];
@@ -47,3 +47,6 @@ spPitchCorr(spCorr(snd, fs, [],'plot'), fs)
 trd =  istft(trd, h, nfft, fs);
 figure;
 spPitchCorr(spCorr(trd, fs, [],'plot'), fs)
+
+rY =  istft(rY, h, nfft, fs);
+spPitchCorr(spCorr(rY, fs, [],'plot'), fs)
