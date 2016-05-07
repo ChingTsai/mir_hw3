@@ -60,6 +60,6 @@ figure;
 spCorr(rc, fs, [],'plot');
 min_length = min(length(y),length(rv));
 [SDR,SIR,SAR,perm] = bss_eval_sources(rc(1:min_length),y(1:min_length)') 
-audiowrite(['0' int2str(j+1) '_vio_est.wav'],rc,fs);
+audiowrite(['0' int2str(j+1) '_cla_est.wav'],rc,fs);
 
 end
