@@ -1,4 +1,4 @@
-function [W,H] = nmf(V,Winit,Hinit,tol,timelimit,maxiter)
+function [W,H] = nmf(V,Winit,Hinit,tol,timelimit,maxiter,fix)
 
 % NMF by alternative non-negative least squares using projected gradients
 % Author: Chih-Jen Lin, National Taiwan University
@@ -7,6 +7,7 @@ function [W,H] = nmf(V,Winit,Hinit,tol,timelimit,maxiter)
 % Winit,Hinit: initial solution
 % tol: tolerance for a relative stopping condition
 % timelimit, maxiter: limit of time and iterations
+% fix witch matrix
 
 W = Winit; H = Hinit; initt = cputime;
 
@@ -21,17 +22,18 @@ for iter=1:maxiter,
   if projnorm < tol*initgrad | cputime-initt > timelimit,
     break;
   end
-  
+  if fix == 1 || fix == 0 
   [W,gradW,iterW] = nlssubprob(V',H',W',tolW,1000); W = W'; gradW = gradW';
   if iterW==1,
     tolW = 0.1 * tolW;
   end
-
+  end
+  if fix == 2 || fix == 0
   [H,gradH,iterH] = nlssubprob(V,W,H,tolH,1000);
   if iterH==1,
     tolH = 0.1 * tolH; 
   end
-
+  end
   if rem(iter,10)==0, fprintf('.'); end
 end
 fprintf('\nIter = %d Final proj-grad norm %f\n', iter, projnorm);
