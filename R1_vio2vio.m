@@ -1,9 +1,9 @@
 clear;
 PATH_DATA_SET='.\audio\train\';
-PATH_VAL_DATA = '.\audio\validation_mix'
+PATH_VAL_DATA = '.\audio\validation';
 [listOfvio] = listfile(fullfile(PATH_DATA_SET,'vio'));
 [listOfcla] = listfile(fullfile(PATH_DATA_SET,'cla'));
-[listOfmix] =  listfile(fullfile(PATH_VAL_DATA,''));
+[listOfval] =  listfile(fullfile(PATH_VAL_DATA,''));
 listOfFile =[listOfvio,listOfcla];
 %%
 Template = [];
