@@ -1,7 +1,9 @@
 clear;
 PATH_DATA_SET='.\audio\train\';
+PATH_VAL_DATA = '.\audio\validation_mix'
 [listOfvio] = listfile(fullfile(PATH_DATA_SET,'vio'));
 [listOfcla] = listfile(fullfile(PATH_DATA_SET,'cla'));
+[listOfmix] =  listfile(fullfile(PATH_VAL_DATA,''));
 listOfFile =[listOfvio,listOfcla];
 %%
 Template = [];
@@ -98,16 +100,18 @@ m = abs(Y);
 angl = angle(Y);
 shape = size(Y);
 
-inW = dicOfvio;
-inH = rand(135 , shape(2));
+inW = Template;
+inH = rand(255 , shape(2));
 [W,H] = nmf(m,inW,inH,0.00001,20,500,2);
 visualizeSpec(H,par);
 
 
 rm = W*H;
+wv = W(:,1:135);
+wr = W(:,136:1);
 rY = rm.*cos(angl) + i*rm.*sin(angl);
 visualizeSpec(rY,par);
 rY = istft(rY, h, nfft, fs);
-audiowrite('re_01_cla.wav',rY,fs)
+audiowrite('re_01_mix.wav',rY,fs)
 
 

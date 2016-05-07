@@ -1,7 +1,9 @@
 clear;
 PATH_DATA_SET='.\audio\train\';
+PATH_VAL_DATA = '.\audio\validation_mix'
 [listOfvio] = listfile(fullfile(PATH_DATA_SET,'vio'));
 [listOfcla] = listfile(fullfile(PATH_DATA_SET,'cla'));
+[listOfmix] =  listfile(fullfile(PATH_VAL_DATA,''));
 listOfFile =[listOfvio,listOfcla];
 %%
 Template = [];
@@ -109,5 +111,25 @@ rY = rm.*cos(angl) + i*rm.*sin(angl);
 visualizeSpec(rY,par);
 rY = istft(rY, h, nfft, fs);
 audiowrite('re_01_mix.wav',rY,fs)
+
+rm = W(:,1:135)*H(1:135,:);
+rY = rm.*cos(angl) + i*rm.*sin(angl);
+visualizeSpec(rY,par);
+rY = istft(rY, h, nfft, fs);
+audiowrite('01_vio_est.wav',rY,fs)
+
+rm = W(:,136:end)*H(136:end,:);
+rY = rm.*cos(angl) + i*rm.*sin(angl);
+visualizeSpec(rY,par);
+rY = istft(rY, h, nfft, fs);
+audiowrite('01_cla_est.wav',rY,fs)
+
+
+
+
+
+
+
+
 
 
