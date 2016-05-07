@@ -34,32 +34,35 @@ Template = [Template,W];
 
 end
 %%
-for j = 0 :0
 
-
+BSS = [];
+for j = 0 :4
 
 [rv,rc] = util_SourceSep(listOfval{j*3+2},Template);
 %vio
-[y,fs,bits,opt_ck] = wavread(listOfval{j*3+3});
+[y_v,fs,bits,opt_ck] = wavread(listOfval{j*3+3});
 idx=find(sum(y,2)==0);
-y(idx,:)=[];
+y_v(idx,:)=[];
 figure;
-spCorr(y, fs, [],'plot');
+spCorr(y_v, fs, [],'plot');
 figure;
 spCorr(rv, fs, [],'plot');
-min_length = min(length(y),length(rv));
-[SDR,SIR,SAR,perm] = bss_eval_sources(rv(1:min_length),y(1:min_length)' )
+
 audiowrite(['0' int2str(j+1) '_vio_est.wav'],rv,fs);
 %cla
-[y,fs,bits,opt_ck] = wavread(listOfval{j*3+1});
-idx=find(sum(y,2)==0);
-y(idx,:)=[];
+[y_c,fs,bits,opt_ck] = wavread(listOfval{j*3+1});
+idx=find(sum(y_c,2)==0);
+y_c(idx,:)=[];
 figure;
-spCorr(y, fs, [],'plot');
+spCorr(y_c, fs, [],'plot');
 figure;
 spCorr(rc, fs, [],'plot');
-min_length = min(length(y),length(rv));
-[SDR,SIR,SAR,perm] = bss_eval_sources(rc(1:min_length),y(1:min_length)') 
+
 audiowrite(['0' int2str(j+1) '_cla_est.wav'],rc,fs);
+
+min_length = min([length(y_v),length(rv),length(y_c),length(rv)]);
+[SDR,SIR,SAR,perm] = bss_eval_sources([rv(1:min_length);...
+    rc(1:min_length)],[y_v(1:min_length)';y_c(1:min_length)'])
+BSS = [BSS;[SDR,SIR,SAR,perm]];
 
 end
