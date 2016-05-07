@@ -8,6 +8,8 @@ Template = [];
 
 nfft = 2048;
 h = 1024;
+par.logComp = 100;
+
 
 for j = 1 : 85
 [y,fs,bits,opt_ck] = wavread(listOfFile{j});
@@ -75,6 +77,8 @@ shape = size(Y);
 inW = dicOfvio;
 inH = rand(135 , shape(2));
 [W,H] = nmf(m,inW,inH,0.00001,20,500,2);
+visualizeSpec(H,par);
+
 
 rm = W*H;
 rY = rm.*cos(angl) + i*rm.*sin(angl);
