@@ -39,7 +39,7 @@ visualizeSpec(dicOfvio,par);
 par.tAxis = 50:89;
 visualizeSpec(dicOfcla,par);
 %}
-%%
+%% vio->vio
 [y,fs,bits,opt_ck] = wavread('./audio/validation/01_vio.wav');
 idx=find(sum(y,2)==0);
 y(idx,:)=[];
@@ -58,4 +58,28 @@ rm = W*H;
 rY = rm.*cos(angl) + i*rm.*sin(angl);
 visualizeSpec(rY,par);
 rY = istft(rY, h, nfft, fs);
+audiowrite('re_01_vio.wav',rY,fs);
+
+%% vio->cla
+
+[y,fs,bits,opt_ck] = wavread('./audio/validation/01_cla.wav');
+idx=find(sum(y,2)==0);
+y(idx,:)=[];
+
+[Y, f, t] = stft(y,2048,h,nfft,fs);
+
+m = abs(Y);
+angl = angle(Y);
+shape = size(Y);
+
+inW = dicOfvio;
+inH = rand(135 , shape(2));
+[W,H] = nmf(m,inW,inH,0.00001,20,500,2);
+
+rm = W*H;
+rY = rm.*cos(angl) + i*rm.*sin(angl);
+visualizeSpec(rY,par);
+rY = istft(rY, h, nfft, fs);
+audiowrite('re_01_cla.wav',rY,fs);
+
 
